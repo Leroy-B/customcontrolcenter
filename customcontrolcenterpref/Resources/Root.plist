@@ -21,7 +21,9 @@
 			<string>pfIsTweakEnabled</string>
 			<key>label</key>
 			<string>Enable CustomControlCenter</string>
-			<key>PostNotification</key>
+			<key>sublabel</key>
+			<!-- <string>Needs a respring.</string>
+			<key>PostNotification</key> -->
 			<string>ch.leroyb.CustomControlCenterPref.preferencesChanged</string>
 		</dict>
 		<dict>
@@ -121,7 +123,7 @@
 			<key>label</key>
 			<string>infos</string>
 			<key>footerText</key>
-			<string>AlwaysRemindMe by LeroyB. Build 1.0.1 [Thursday, 11 October 12018]</string>
+			<string>CustomControlCenter by LeroyB. Build 0.0.1 [Friday, 12 October 12018]</string>
 		</dict>
 		<dict>
 			<key>icon</key>

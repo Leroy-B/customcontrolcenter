@@ -39,7 +39,7 @@
 
 - (void)_returnKeyPressed:(NSNotificationCenter *)notification{
     [self.view endEditing:YES];
-	[[NSNotificationCenter defaultCenter] postNotificationName:@"ch.leroyb.AlwaysRemindMePref.preferencesChanged" object:self];
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"ch.leroyb.CustomControlCenterPref.preferencesChanged" object:self];
 }
 
 -(void)viewDidLoad{
@@ -74,14 +74,14 @@
 }
 
 -(void)showSourceCode{
-	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://github.com/Leroy-B/alwaysremindme"] options:@{} completionHandler:nil];
+	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://github.com/Leroy-B/customcontrolcenter"] options:@{} completionHandler:nil];
 }
 
 -(void)showBitcoin{
 	UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
 	pasteboard.string = @"1EZATpr8i4N5XaR9bfCwPHAK6DB2s19uwN";
 	UIAlertController * alert = [UIAlertController
-			alertControllerWithTitle:@"AlwaysRemindMe: INFO"
+			alertControllerWithTitle:@"CustomControlCenter: INFO"
 							 message:@"My Bitcon address has been copied to your clipboard, all you have to do is paste it. Thank you for your donation! :)"
 					  preferredStyle:UIAlertControllerStyleAlert];
 	UIAlertAction* okButton = [UIAlertAction
@@ -99,7 +99,7 @@
 	UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
 	pasteboard.string = @"42jBMo7NpyYUoPU3qdu7x6cntT3ez2da5TxKTwZVX9eZfwBA6XzeQEFcTxBukNUYyaGtgvdKtLyz72udsnRo3hFhLYPo37L";
 	UIAlertController * alert = [UIAlertController
-			alertControllerWithTitle:@"AlwaysRemindMe: INFO"
+			alertControllerWithTitle:@"CustomControlCenter: INFO"
 							 message:@"My Monero address has been copied to your clipboard, all you have to do is paste it. Thank you for your donation! :)"
 					  preferredStyle:UIAlertControllerStyleAlert];
 	UIAlertAction* okButton = [UIAlertAction
@@ -124,7 +124,7 @@
 	NSString *message = [NSString stringWithFormat:@"Your screen height is: '%.1f' and the width is: '%.1f'!\nYour resolution is: '%.1f'x'%.1f'!", screenHeight, screenWidth, screenHeight*2, screenWidth*2];
 
 	UIAlertController * alert = [UIAlertController
-            alertControllerWithTitle:@"AlwaysRemindMe: INFO"
+            alertControllerWithTitle:@"CustomControlCenter: INFO"
                              message:message
                       preferredStyle:UIAlertControllerStyleAlert];
 	UIAlertAction* okButton = [UIAlertAction
