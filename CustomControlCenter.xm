@@ -1,4 +1,13 @@
+/*TODO:
+
+	- as soon as the window is disapearing -> alpha=0 the the modules view
+
+
+*/
+
+
 @interface SBControlCenterWindow : UIWindow
+@property (assign,setter=_setCornerRadius:,nonatomic) double _cornerRadius;
 -(void)drawControlCenterSize;
 @end
 
@@ -6,11 +15,17 @@
 -(void)drawControlCenterHeader;
 @end
 
-@interface CCUIModuleCollectionView : UIViewController
+@interface CCUIScrollView : UIScrollView
 -(void)drawControlCenterCollection;
 @end
 
-@interface CCUILayoutOptions : NSObject
+@interface MTMaterialView : UIView
+@end
+
+@interface CCUILayoutOptions : NSObject {
+	double _itemEdgeSize;
+	double _itemSpacing;
+}
 @end
 
 #define PLIST_PATH @"/var/mobile/Library/Preferences/ch.leroyb.CustomControlCenterPref.plist"
@@ -34,6 +49,9 @@ static CGRect twCCHeaderFrame;
 static NSNumber *twCCHeaderSizeChoice = nil;
 static NSNumber *twCCHeaderSizeCustomHeight = nil;
 
+static NSNumber *twCCItemSpacing = nil;
+static NSNumber *twCCItemEdgeSpacing = nil;
+
 static void loadPrefs() {
     // storing in a key and value fashon for easy access
 	NSMutableDictionary *prefs = [[NSMutableDictionary alloc] initWithContentsOfFile:PLIST_PATH];
@@ -55,6 +73,9 @@ static void loadPrefs() {
 
         twCCHeaderSizeChoice            = ([prefs objectForKey:@"pfCCHeaderSizeChoice"] ? [prefs objectForKey:@"pfCCHeaderSizeChoice"] : twCCHeaderSizeChoice);
         twCCHeaderSizeCustomHeight      = ([prefs objectForKey:@"pfCCHeaderSizeCustomHeight"] ? [prefs objectForKey:@"pfCCHeaderSizeCustomHeight"] : twCCHeaderSizeCustomHeight);
+
+		twCCItemSpacing		            = ([prefs objectForKey:@"pfCCItemSpacing"] ? [prefs objectForKey:@"pfCCItemSpacing"] : twCCItemSpacing);
+        twCCItemEdgeSpacing				= ([prefs objectForKey:@"pfCCItemEdgeSpacing"] ? [prefs objectForKey:@"pfCCItemEdgeSpacing"] : twCCItemEdgeSpacing);
     }
     [prefs release];
 }
@@ -103,7 +124,26 @@ static void loadPrefs() {
 
 %end
 
+%hook MTMaterialView
+
+	-(void)_setCornerRadius:(double)arg1 {
+		arg1 = 20;
+		%orig(arg1);
+		NSLog(@"CustomControlCenter DEBUG: _setCornerRadius %f", arg1);
+	}
+
+%end
+
 %hook SBControlCenterWindow
+
+	// -(void)_setCornerRadius:(double)arg1 {
+	// 	%orig();
+	// 	NSLog(@"CustomControlCenter DEBUG: _setCornerRadius %f", arg1);
+	// }
+
+	-(double)_cornerRadius {
+		return 20;
+	}
 
     %new
     -(void)drawControlCenterSize {
@@ -179,6 +219,16 @@ static void loadPrefs() {
                 break;
         }//switch twCCWindowPosChoice end
 
+
+
+		// UIWindow *window = [[UIApplication sharedApplication] keyWindow];
+		// UIView *topView = window.rootViewController.view;
+		//NSLog(@"CustomControlCenter DEBUG: hook: %f", MSHookIvar<double>(self, "_cornerRadius"));
+		//
+		// topView.layer.cornerRadius = 5;
+		// topView.layer.masksToBounds = true;
+
+		//MSHookIvar<CGFloat>(%c(SBControlCenterWindow), "_cornerRadius") = 20;
         // set new rect with x,y,width and height
         twCCWindowFrame = CGRectMake([varCCWindowPosCustomX doubleValue], [varCCWindowPosCustomY doubleValue], [varCCWindowSizeCustomWidth doubleValue], [varCCWindowSizeCustomHeight doubleValue]);
     }
@@ -195,7 +245,7 @@ static void loadPrefs() {
 
 %end //hook SBControlCenterWindow
 
-%hook CCUIModuleCollectionView
+%hook CCUIScrollView
 
     %new
     -(void)drawControlCenterCollection {
@@ -239,14 +289,14 @@ static void loadPrefs() {
         // }// switch twCCWindowSizeChoice end
 
         // switch twCCWindowPosChoice start
-        switch ([twCCWindowPosChoice intValue]) {
-            case 0://top
+        switch ([twCCCollectionWindowPosChoice intValue]) {
+            case 0://default
                 varCCCollectionWindowPosCustomX = @(0);
                 varCCCollectionWindowPosCustomY = @(0);
                 break;
-            case 1://bottom
+            case 1://top
                 varCCCollectionWindowPosCustomX = @(0);
-                varCCCollectionWindowPosCustomY = @(twCCCollectionWindowFrame.size.height/2);
+                varCCCollectionWindowPosCustomY = @(-20);
                 break;
             case 999://custom
                 if([twCCCollectionWindowPosCustomX isKindOfClass:[NSNull class]] && [twCCCollectionWindowPosCustomY isKindOfClass:[NSNull class]]) {
@@ -271,31 +321,51 @@ static void loadPrefs() {
         }//switch twCCWindowPosChoice end
 
         // set new rect with x,y,width and height
-        NSLog(@"CustomControlCenter DEBUG: twCCCollectionWindowFrame %@", NSStringFromCGRect(twCCCollectionWindowFrame));
-        twCCCollectionWindowFrame = CGRectMake([varCCCollectionWindowPosCustomX doubleValue], 50, twCCCollectionWindowFrame.size.width, twCCCollectionWindowFrame.size.height);
+        twCCCollectionWindowFrame = CGRectMake([varCCCollectionWindowPosCustomX doubleValue], [varCCCollectionWindowPosCustomY doubleValue], twCCCollectionWindowFrame.size.width, twCCCollectionWindowFrame.size.height);
     }
 
-    -(id)initWithFrame:(CGRect)arg1 layoutOptions:(id)arg2 {
-        NSLog(@"CustomControlCenter DEBUG: arg1 %@ ;; arg2 %@", NSStringFromCGRect(arg1), arg2);
+    -(void)setFrame:(CGRect)arg1 {
         if(!twIsEnabled) {
-            return %orig(arg1, arg2);
+            return %orig(arg1);
         } else {
             twCCCollectionWindowFrame = arg1;
             [[%c(CCUIModuleCollectionView) alloc] drawControlCenterCollection];
-            return %orig(twCCCollectionWindowFrame, arg2);
+            return %orig(twCCCollectionWindowFrame);
         }
     }
 
-%end //hook CCUIModuleCollectionView
+%end //hook CCUIScrollView
 
 %hook CCUILayoutOptions
 
+	NSNumber *varCCItemSpacing = nil;
+	NSNumber *varCCItemEdgeSpacing = nil;
+
     -(double)itemSpacing {
-        return 5;
+		if(!twIsEnabled) {
+			return %orig();
+		} else {
+			if([twCCItemSpacing isKindOfClass:[NSNull class]]) {
+				varCCItemSpacing = @(15);
+			} else {
+				varCCItemSpacing = twCCItemSpacing;
+			}
+	        return [varCCItemSpacing doubleValue];
+		}
     }
 
     -(double)itemEdgeSize {
-        return 69;
+		//MSHookIvar<double>(self, "_cornerRadius") = @"";
+		if(!twIsEnabled) {
+			return %orig();
+		} else {
+			if([twCCItemEdgeSpacing isKindOfClass:[NSNull class]]) {
+				varCCItemEdgeSpacing = @(69);
+			} else {
+				varCCItemEdgeSpacing = twCCItemEdgeSpacing;
+			}
+	        return [varCCItemEdgeSpacing doubleValue];
+		}
     }
 
 %end

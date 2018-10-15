@@ -165,7 +165,7 @@
 			<key>cell</key>
 			<string>PSGroupCell</string>
 			<key>label</key>
-			<string>Choose a modules position! (Requiers a respring?)</string>
+			<string>Choose a modules position!</string>
 			<key>footerText</key>
 			<string>Choose the position of the 'Modules' inside the Control Center window. For custom values, select 'custom' above and use the input fields. X and Y = 0, is the top left point on-screen!</string>
 		</dict>
@@ -186,8 +186,8 @@
 			</array>
 			<key>validTitles</key>
 			<array>
+				<string>default</string>
 				<string>top</string>
-				<string>bottom</string>
 				<string>custom</string>
 			</array>
 			<key>PostNotification</key>
@@ -294,6 +294,48 @@
 			<string>ch.leroyb.CustomControlCenterPref.preferencesChanged</string>
 		</dict> -->
 		<!-- header size [end] -->
+		<!-- item spacing [start] -->
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>Choose a spacing value!</string>
+			<key>footerText</key>
+			<string>Choose the amount of spacing between Control Center items.</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSEditTextCell</string>
+			<key>placeholder</key>
+			<string>default: 15</string>
+			<key>default</key>
+			<string></string>
+			<key>defaults</key>
+			<string>ch.leroyb.CustomControlCenterPref</string>
+			<key>key</key>
+			<string>pfCCItemSpacing</string>
+			<key>label</key>
+			<string>Custom item spacing value:</string>
+			<key>PostNotification</key>
+			<string>ch.leroyb.CustomControlCenterPref.preferencesChanged</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSEditTextCell</string>
+			<key>placeholder</key>
+			<string>default: 69</string>
+			<key>default</key>
+			<string></string>
+			<key>defaults</key>
+			<string>ch.leroyb.CustomControlCenterPref</string>
+			<key>key</key>
+			<string>pfCCItemEdgeSpacing</string>
+			<key>label</key>
+			<string>Custom edge spacing value:</string>
+			<key>PostNotification</key>
+			<string>ch.leroyb.CustomControlCenterPref.preferencesChanged</string>
+		</dict>
+		<!-- item spacing [end] -->
 		<!-- actions start -->
 		<dict>
 			<key>cell</key>
