@@ -20,6 +20,7 @@
 @end
 
 @interface MTMaterialView : UIView
+-(id)_viewControllerForAncestor;
 @end
 
 @interface CCUILayoutOptions : NSObject {
@@ -127,23 +128,17 @@ static void loadPrefs() {
 %hook MTMaterialView
 
 	-(void)_setCornerRadius:(double)arg1 {
-		arg1 = 20;
+        NSLog(@"CustomControlCenter DEBUG: _viewControllerForAncestor: %@", self._viewControllerForAncestor);
+        //  if(self.view isKindOfClass:[CCUIModularControlCenterOverlayViewController class]]) {
+        // //if ([%c(MTMaterialView) isKindOfClass:[CCUIModularControlCenterOverlayViewController class]]) {
+        //     %orig(20);
+        // }
 		%orig(arg1);
-		NSLog(@"CustomControlCenter DEBUG: _setCornerRadius %f", arg1);
 	}
 
 %end
 
 %hook SBControlCenterWindow
-
-	// -(void)_setCornerRadius:(double)arg1 {
-	// 	%orig();
-	// 	NSLog(@"CustomControlCenter DEBUG: _setCornerRadius %f", arg1);
-	// }
-
-	-(double)_cornerRadius {
-		return 20;
-	}
 
     %new
     -(void)drawControlCenterSize {
