@@ -29,6 +29,13 @@
 }
 @end
 
+@interface CCUILayoutView : CCUIScrollView
+@end
+
+@interface CCUIModuleCollectionView : CCUILayoutView
+-(id)initWithFrame:(CGRect)arg1 layoutOptions:(id)arg2;
+@end
+
 #define PLIST_PATH @"/var/mobile/Library/Preferences/ch.leroyb.CustomControlCenterPref.plist"
 static bool twIsEnabled = NO;
 
@@ -83,6 +90,20 @@ static void loadPrefs() {
 
 // ############################# HOOKS ### START ####################################
 
+%hook CCUIModuleCollectionView
+
+	-(id)initWithFrame:(CGRect)arg1 layoutOptions:(id)arg2 {
+		NSLog(@"CustomControlCenter DEBUG: initWithFrame %@ ;;; %@", NSStringFromCGRect(arg1), arg2);
+		return %orig(arg1, arg2);
+	}
+
+	-(void)setAlpha:(double)arg1 {
+		%orig(arg1);
+		NSLog(@"CustomControlCenter DEBUG: setAlpha %f", arg1);
+	}
+
+%end
+
 %hook CCUIHeaderPocketView
 
     %new
@@ -125,18 +146,37 @@ static void loadPrefs() {
 
 %end
 
-%hook MTMaterialView
 
-	-(void)_setCornerRadius:(double)arg1 {
-        NSLog(@"CustomControlCenter DEBUG: _viewControllerForAncestor: %@", self._viewControllerForAncestor);
-        //  if(self.view isKindOfClass:[CCUIModularControlCenterOverlayViewController class]]) {
-        // //if ([%c(MTMaterialView) isKindOfClass:[CCUIModularControlCenterOverlayViewController class]]) {
-        //     %orig(20);
-        // }
-		%orig(arg1);
+
+%hook CCUIModularControlCenterOverlayViewController
+
+	-(void)dismissAnimated:(BOOL)arg1 withCompletionHandler:(id)arg2 {
+		%orig(arg1, arg2);
+		//[[%c(CCUIModuleCollectionView) alloc] setAlpha:0];
+		NSLog(@"CustomControlCenter DEBUG: dismissAnimated arg1: %d ;; arg2: %@", arg1, arg2);
 	}
 
 %end
+
+@interface CCUIDismissalGestureRecognizer : UIPanGestureRecognizer
+@end
+
+%hook CCUIDismissalGestureRecognizer
+
+	-(id)initWithTarget:(id)arg1 action:(SEL)arg2 {
+		[[%c(CCUIModuleCollectionView) alloc] setAlpha:0];
+		NSLog(@"CustomControlCenter DEBUG: initWithTarget arg1: %@ ;; arg2: %@", arg1, NSStringFromSelector(arg2));
+		return %orig(arg1, arg2);
+	}
+
+	-(void)touchesBegan:(id)arg1 withEvent:(id)arg2  {
+		%orig(arg1, arg2);
+		[[%c(CCUIModuleCollectionView) alloc] setAlpha:0];
+		NSLog(@"CustomControlCenter DEBUG: touchesEnded arg1: %@ ;; arg2: %@", arg1, arg2);
+	}
+
+%end
+
 
 %hook SBControlCenterWindow
 
