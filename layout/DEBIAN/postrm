@@ -1,4 +1,4 @@
 #!/bin/bash
 
-echo -e "<div><style>span{color:orange;}</style><span>I hope you had a good time with CustomControlCenter 😊</span>"
+echo -e "<div><style>span{color:orange;}</style><span>I hope you had a good time with CustomControlCentre 😊</span>"
 echo -e "<div><style>span{color:orange;}</style><span>If you uninstalled CustomControlCenter because you had issues please report them to me!</span>"

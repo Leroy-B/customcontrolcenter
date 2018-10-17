@@ -8,7 +8,7 @@ make clean
 rm -rf obj
 rm -rf packages
 rm -rf .theos
-rm -rf customcontrolcenterpref/.theos
+rm -rf customcontrolcentrepref/.theos
 echo "Cleaning done."
 
 echo "Building..."

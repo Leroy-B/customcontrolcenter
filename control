@@ -1,5 +1,5 @@
-Package: ch.leroyb.customcontrolcenter
-Name: CustomControlCenter
+Package: ch.leroyb.customcontrolcentre
+Name: CustomControlCentre
 Depends: mobilesubstrate, firmware (>= 11.0)
 Version: 0.0.1
 Architecture: iphoneos-arm

@@ -2,7 +2,7 @@
 #include <spawn.h>
 #include <signal.h>
 
-#define PLIST_PATH @"/var/mobile/Library/Preferences/ch.leroyb.CustomControlCenterPref.plist"
+#define PLIST_PATH @"/var/mobile/Library/Preferences/ch.leroyb.CustomControlCentrePref.plist"
 
 
 @implementation CCCRootListController
@@ -39,7 +39,7 @@
 
 - (void)_returnKeyPressed:(NSNotificationCenter *)notification{
     [self.view endEditing:YES];
-	[[NSNotificationCenter defaultCenter] postNotificationName:@"ch.leroyb.CustomControlCenterPref.preferencesChanged" object:self];
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"ch.leroyb.CustomControlCentrePref.preferencesChanged" object:self];
 }
 
 -(void)viewDidLoad{
@@ -74,7 +74,7 @@
 }
 
 -(void)showSourceCode{
-	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://github.com/Leroy-B/customcontrolcenter"] options:@{} completionHandler:nil];
+	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://github.com/Leroy-B/customcontrolcentre"] options:@{} completionHandler:nil];
 }
 
 -(void)showBitcoin{
@@ -124,7 +124,7 @@
 	NSString *message = [NSString stringWithFormat:@"Your screen height is: '%.1f' and the width is: '%.1f'!\nYour resolution is: '%.1f'x'%.1f'!", screenHeight, screenWidth, screenHeight*2, screenWidth*2];
 
 	UIAlertController * alert = [UIAlertController
-            alertControllerWithTitle:@"CustomControlCenter: INFO"
+            alertControllerWithTitle:@"CustomControlCentre: INFO"
                              message:message
                       preferredStyle:UIAlertControllerStyleAlert];
 	UIAlertAction* okButton = [UIAlertAction
