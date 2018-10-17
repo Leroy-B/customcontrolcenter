@@ -16,15 +16,15 @@
 			<key>default</key>
 			<false/>
 			<key>defaults</key>
-			<string>ch.leroyb.CustomControlCenterPref</string>
+			<string>ch.leroyb.CustomControlCentrePref</string>
 			<key>key</key>
 			<string>pfIsTweakEnabled</string>
 			<key>label</key>
-			<string>Enable CustomControlCenter</string>
+			<string>Enable CustomControlCentre</string>
 			<!-- <key>sublabel</key>
 			<string>Needs a respring.</string> -->
 			<key>PostNotification</key>
-			<string>ch.leroyb.CustomControlCenterPref.preferencesChanged</string>
+			<string>ch.leroyb.CustomControlCentrePref.preferencesChanged</string>
 		</dict>
 		<!-- window size [start] -->
 		<dict>
@@ -33,7 +33,7 @@
 			<key>label</key>
 			<string>Choose a window size! (Requiers a respring)</string>
 			<key>footerText</key>
-			<string>Choose the size of the 'Control Center' window. For custom values, select 'custom' above and use the input fields.</string>
+			<string>Choose the size of the 'Control Centre' window. For custom values, select 'custom' above and use the input fields.</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -41,7 +41,7 @@
 			<key>default</key>
 			<integer>0</integer>
 			<key>defaults</key>
-			<string>ch.leroyb.CustomControlCenterPref</string>
+			<string>ch.leroyb.CustomControlCentrePref</string>
 			<key>key</key>
 			<string>pfCCWindowSizeChoice</string>
 			<key>validValues</key>
@@ -59,7 +59,7 @@
 				<string>custom</string>
 			</array>
 			<key>PostNotification</key>
-			<string>ch.leroyb.CustomControlCenterPref.preferencesChanged</string>
+			<string>ch.leroyb.CustomControlCentrePref.preferencesChanged</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -69,13 +69,13 @@
 			<key>default</key>
 			<string></string>
 			<key>defaults</key>
-			<string>ch.leroyb.CustomControlCenterPref</string>
+			<string>ch.leroyb.CustomControlCentrePref</string>
 			<key>key</key>
 			<string>pfCCWindowSizeCustomHeight</string>
 			<key>label</key>
 			<string>Custom 'height' value:</string>
 			<key>PostNotification</key>
-			<string>ch.leroyb.CustomControlCenterPref.preferencesChanged</string>
+			<string>ch.leroyb.CustomControlCentrePref.preferencesChanged</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -85,13 +85,13 @@
 			<key>default</key>
 			<string></string>
 			<key>defaults</key>
-			<string>ch.leroyb.CustomControlCenterPref</string>
+			<string>ch.leroyb.CustomControlCentrePref</string>
 			<key>key</key>
 			<string>pfCCWindowSizeCustomWidth</string>
 			<key>label</key>
 			<string>Custom 'width' value:</string>
 			<key>PostNotification</key>
-			<string>ch.leroyb.CustomControlCenterPref.preferencesChanged</string>
+			<string>ch.leroyb.CustomControlCentrePref.preferencesChanged</string>
 		</dict>
 		<!-- window size [end] -->
 		<!-- window position [start] -->
@@ -101,7 +101,7 @@
 			<key>label</key>
 			<string>Choose a window position!</string>
 			<key>footerText</key>
-			<string>Choose the position of the 'Control Center' window. For custom values, select 'custom' above and use the input fields. X and Y = 0, is the top left point on-screen!</string>
+			<string>Choose the position of the 'Control Centre' window. For custom values, select 'custom' above and use the input fields. X and Y = 0, is the top left point on-screen!</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -109,7 +109,7 @@
 			<key>default</key>
 			<integer>0</integer>
 			<key>defaults</key>
-			<string>ch.leroyb.CustomControlCenterPref</string>
+			<string>ch.leroyb.CustomControlCentrePref</string>
 			<key>key</key>
 			<string>pfCCWindowPosChoice</string>
 			<key>validValues</key>
@@ -125,7 +125,7 @@
 				<string>custom</string>
 			</array>
 			<key>PostNotification</key>
-			<string>ch.leroyb.CustomControlCenterPref.preferencesChanged</string>
+			<string>ch.leroyb.CustomControlCentrePref.preferencesChanged</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -135,13 +135,13 @@
 			<key>default</key>
 			<string></string>
 			<key>defaults</key>
-			<string>ch.leroyb.CustomControlCenterPref</string>
+			<string>ch.leroyb.CustomControlCentrePref</string>
 			<key>key</key>
 			<string>pfCCWindowPosCustomX</string>
 			<key>label</key>
 			<string>Custom 'X' value:</string>
 			<key>PostNotification</key>
-			<string>ch.leroyb.CustomControlCenterPref.preferencesChanged</string>
+			<string>ch.leroyb.CustomControlCentrePref.preferencesChanged</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -151,13 +151,13 @@
 			<key>default</key>
 			<string></string>
 			<key>defaults</key>
-			<string>ch.leroyb.CustomControlCenterPref</string>
+			<string>ch.leroyb.CustomControlCentrePref</string>
 			<key>key</key>
 			<string>pfCCWindowPosCustomY</string>
 			<key>label</key>
 			<string>Custom 'Y' value:</string>
 			<key>PostNotification</key>
-			<string>ch.leroyb.CustomControlCenterPref.preferencesChanged</string>
+			<string>ch.leroyb.CustomControlCentrePref.preferencesChanged</string>
 		</dict>
 		<!-- window position [end] -->
 		<!-- collection position [start] -->
@@ -167,7 +167,7 @@
 			<key>label</key>
 			<string>Choose a modules position!</string>
 			<key>footerText</key>
-			<string>Choose the position of the 'Modules' inside the Control Center window. For custom values, select 'custom' above and use the input fields. X and Y = 0, is the top left point on-screen!</string>
+			<string>Choose the position of the 'Modules' inside the Control Centre window. For custom values, select 'custom' above and use the input fields. X and Y = 0, is the top left point on-screen!</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -175,7 +175,7 @@
 			<key>default</key>
 			<integer>0</integer>
 			<key>defaults</key>
-			<string>ch.leroyb.CustomControlCenterPref</string>
+			<string>ch.leroyb.CustomControlCentrePref</string>
 			<key>key</key>
 			<string>pfCCCollectionWindowPosChoice</string>
 			<key>validValues</key>
@@ -191,7 +191,7 @@
 				<string>custom</string>
 			</array>
 			<key>PostNotification</key>
-			<string>ch.leroyb.CustomControlCenterPref.preferencesChanged</string>
+			<string>ch.leroyb.CustomControlCentrePref.preferencesChanged</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -201,13 +201,13 @@
 			<key>default</key>
 			<string></string>
 			<key>defaults</key>
-			<string>ch.leroyb.CustomControlCenterPref</string>
+			<string>ch.leroyb.CustomControlCentrePref</string>
 			<key>key</key>
 			<string>pfCCCollectionWindowPosCustomX</string>
 			<key>label</key>
 			<string>Custom 'X' value:</string>
 			<key>PostNotification</key>
-			<string>ch.leroyb.CustomControlCenterPref.preferencesChanged</string>
+			<string>ch.leroyb.CustomControlCentrePref.preferencesChanged</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -217,13 +217,13 @@
 			<key>default</key>
 			<string></string>
 			<key>defaults</key>
-			<string>ch.leroyb.CustomControlCenterPref</string>
+			<string>ch.leroyb.CustomControlCentrePref</string>
 			<key>key</key>
 			<string>pfCCCollectionWindowPosCustomY</string>
 			<key>label</key>
 			<string>Custom 'Y' value:</string>
 			<key>PostNotification</key>
-			<string>ch.leroyb.CustomControlCenterPref.preferencesChanged</string>
+			<string>ch.leroyb.CustomControlCentrePref.preferencesChanged</string>
 		</dict>
 		<!-- collection position [end] -->
 		<!-- header size [start] -->
@@ -233,7 +233,7 @@
 			<key>label</key>
 			<string>Choose a header size!</string>
 			<key>footerText</key>
-			<string>Choose the size of the 'Control Center Header'. For custom values, select 'custom' above and use the input fields.</string>
+			<string>Choose the size of the 'Control Centre Header'. For custom values, select 'custom' above and use the input fields.</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -241,7 +241,7 @@
 			<key>default</key>
 			<integer>0</integer>
 			<key>defaults</key>
-			<string>ch.leroyb.CustomControlCenterPref</string>
+			<string>ch.leroyb.CustomControlCentrePref</string>
 			<key>key</key>
 			<string>pfCCHeaderSizeChoice</string>
 			<key>validValues</key>
@@ -259,7 +259,7 @@
 				<string>custom</string>
 			</array>
 			<key>PostNotification</key>
-			<string>ch.leroyb.CustomControlCenterPref.preferencesChanged</string>
+			<string>ch.leroyb.CustomControlCentrePref.preferencesChanged</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -269,13 +269,13 @@
 			<key>default</key>
 			<string></string>
 			<key>defaults</key>
-			<string>ch.leroyb.CustomControlCenterPref</string>
+			<string>ch.leroyb.CustomControlCentrePref</string>
 			<key>key</key>
 			<string>twCCHeaderSizeCustomHeight</string>
 			<key>label</key>
 			<string>Custom 'height' value:</string>
 			<key>PostNotification</key>
-			<string>ch.leroyb.CustomControlCenterPref.preferencesChanged</string>
+			<string>ch.leroyb.CustomControlCentrePref.preferencesChanged</string>
 		</dict>
 		<!-- <dict>
 			<key>cell</key>
@@ -285,13 +285,13 @@
 			<key>default</key>
 			<string></string>
 			<key>defaults</key>
-			<string>ch.leroyb.CustomControlCenterPref</string>
+			<string>ch.leroyb.CustomControlCentrePref</string>
 			<key>key</key>
 			<string>pfCCWindowSizeCustomWidth</string>
 			<key>label</key>
 			<string>Custom 'width' value:</string>
 			<key>PostNotification</key>
-			<string>ch.leroyb.CustomControlCenterPref.preferencesChanged</string>
+			<string>ch.leroyb.CustomControlCentrePref.preferencesChanged</string>
 		</dict> -->
 		<!-- header size [end] -->
 		<!-- item spacing [start] -->
@@ -301,7 +301,7 @@
 			<key>label</key>
 			<string>Choose a spacing value!</string>
 			<key>footerText</key>
-			<string>Choose the amount of spacing between Control Center items.</string>
+			<string>Choose the amount of spacing between Control Centre items.</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -311,13 +311,13 @@
 			<key>default</key>
 			<string></string>
 			<key>defaults</key>
-			<string>ch.leroyb.CustomControlCenterPref</string>
+			<string>ch.leroyb.CustomControlCentrePref</string>
 			<key>key</key>
 			<string>pfCCItemSpacing</string>
 			<key>label</key>
 			<string>Custom item spacing value:</string>
 			<key>PostNotification</key>
-			<string>ch.leroyb.CustomControlCenterPref.preferencesChanged</string>
+			<string>ch.leroyb.CustomControlCentrePref.preferencesChanged</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -327,13 +327,13 @@
 			<key>default</key>
 			<string></string>
 			<key>defaults</key>
-			<string>ch.leroyb.CustomControlCenterPref</string>
+			<string>ch.leroyb.CustomControlCentrePref</string>
 			<key>key</key>
 			<string>pfCCItemEdgeSpacing</string>
 			<key>label</key>
 			<string>Custom edge spacing value:</string>
 			<key>PostNotification</key>
-			<string>ch.leroyb.CustomControlCenterPref.preferencesChanged</string>
+			<string>ch.leroyb.CustomControlCentrePref.preferencesChanged</string>
 		</dict>
 		<!-- item spacing [end] -->
 		<!-- actions start -->
@@ -367,7 +367,7 @@
 			<key>label</key>
 			<string>infos</string>
 			<key>footerText</key>
-			<string>CustomControlCenter by LeroyB. Build 0.0.2 [Wednesday, 17 October 12018]</string>
+			<string>CustomControlCentre by LeroyB. Build 0.0.2 [Wednesday, 17 October 12018]</string>
 		</dict>
 		<dict>
 			<key>icon</key>
@@ -432,6 +432,6 @@
 		<!-- infos end -->
 	</array>
 	<key>title</key>
-	<string>CustomControlCenter</string>
+	<string>CustomControlCentre</string>
 </dict>
 </plist>

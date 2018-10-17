@@ -5,9 +5,9 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleExecutable</key>
-	<string>CustomControlCenterPref</string>
+	<string>CustomControlCentrePref</string>
 	<key>CFBundleIdentifier</key>
-	<string>ch.leroyb.customcontrolcenterpref</string>
+	<string>ch.leroyb.customcontrolcentrepref</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundlePackageType</key>

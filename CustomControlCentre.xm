@@ -36,7 +36,7 @@
 -(id)initWithFrame:(CGRect)arg1 layoutOptions:(id)arg2;
 @end
 
-#define PLIST_PATH @"/var/mobile/Library/Preferences/ch.leroyb.CustomControlCenterPref.plist"
+#define PLIST_PATH @"/var/mobile/Library/Preferences/ch.leroyb.CustomControlCentrePref.plist"
 static bool twIsEnabled = NO;
 
 static CGRect twCCWindowFrame;
@@ -93,13 +93,13 @@ static void loadPrefs() {
 %hook CCUIModuleCollectionView
 
 	-(id)initWithFrame:(CGRect)arg1 layoutOptions:(id)arg2 {
-		NSLog(@"CustomControlCenter DEBUG: initWithFrame %@ ;;; %@", NSStringFromCGRect(arg1), arg2);
+		NSLog(@"CustomControlCentre DEBUG: initWithFrame %@ ;;; %@", NSStringFromCGRect(arg1), arg2);
 		return %orig(arg1, arg2);
 	}
 
 	-(void)setAlpha:(double)arg1 {
 		%orig(arg1);
-		NSLog(@"CustomControlCenter DEBUG: setAlpha %f", arg1);
+		NSLog(@"CustomControlCentre DEBUG: setAlpha %f", arg1);
 	}
 
 %end
@@ -127,7 +127,7 @@ static void loadPrefs() {
                 }
                 break;
             default:
-                NSLog(@"CustomControlCenter ISSUE: switch -> twCCHeaderSizeChoice is default");
+                NSLog(@"CustomControlCentre ISSUE: switch -> twCCHeaderSizeChoice is default");
                 varCCHeaderSizeCustomHeight = @(twCCHeaderFrame.size.height);
                 break;
         }//switch twCCWindowSizeChoice end
@@ -153,7 +153,7 @@ static void loadPrefs() {
 	-(void)dismissAnimated:(BOOL)arg1 withCompletionHandler:(id)arg2 {
 		%orig(arg1, arg2);
 		//[[%c(CCUIModuleCollectionView) alloc] setAlpha:0];
-		NSLog(@"CustomControlCenter DEBUG: dismissAnimated arg1: %d ;; arg2: %@", arg1, arg2);
+		NSLog(@"CustomControlCentre DEBUG: dismissAnimated arg1: %d ;; arg2: %@", arg1, arg2);
 	}
 
 %end
@@ -165,14 +165,14 @@ static void loadPrefs() {
 
 	-(id)initWithTarget:(id)arg1 action:(SEL)arg2 {
 		[[%c(CCUIModuleCollectionView) alloc] setAlpha:0];
-		NSLog(@"CustomControlCenter DEBUG: initWithTarget arg1: %@ ;; arg2: %@", arg1, NSStringFromSelector(arg2));
+		NSLog(@"CustomControlCentre DEBUG: initWithTarget arg1: %@ ;; arg2: %@", arg1, NSStringFromSelector(arg2));
 		return %orig(arg1, arg2);
 	}
 
 	-(void)touchesBegan:(id)arg1 withEvent:(id)arg2  {
 		%orig(arg1, arg2);
 		[[%c(CCUIModuleCollectionView) alloc] setAlpha:0];
-		NSLog(@"CustomControlCenter DEBUG: touchesEnded arg1: %@ ;; arg2: %@", arg1, arg2);
+		NSLog(@"CustomControlCentre DEBUG: touchesEnded arg1: %@ ;; arg2: %@", arg1, arg2);
 	}
 
 %end
@@ -216,7 +216,7 @@ static void loadPrefs() {
                 }
                 break;
             default:
-                NSLog(@"CustomControlCenter ISSUE: switch -> twCCWindowSizeChoice is default");
+                NSLog(@"CustomControlCentre ISSUE: switch -> twCCWindowSizeChoice is default");
                 varCCWindowSizeCustomHeight = @(screenSize.height);
                 varCCWindowSizeCustomWidth = @(screenSize.width);
                 break;
@@ -248,7 +248,7 @@ static void loadPrefs() {
                 }
                 break;
             default:
-                NSLog(@"CustomControlCenter ISSUE: switch -> twCCWindowPosChoice is default");
+                NSLog(@"CustomControlCentre ISSUE: switch -> twCCWindowPosChoice is default");
                 varCCWindowPosCustomX = @(twCCWindowFrame.origin.x);
                 varCCWindowPosCustomY = @(twCCWindowFrame.origin.y);
                 break;
@@ -258,7 +258,7 @@ static void loadPrefs() {
 
 		// UIWindow *window = [[UIApplication sharedApplication] keyWindow];
 		// UIView *topView = window.rootViewController.view;
-		//NSLog(@"CustomControlCenter DEBUG: hook: %f", MSHookIvar<double>(self, "_cornerRadius"));
+		//NSLog(@"CustomControlCentre DEBUG: hook: %f", MSHookIvar<double>(self, "_cornerRadius"));
 		//
 		// topView.layer.cornerRadius = 5;
 		// topView.layer.masksToBounds = true;
@@ -317,7 +317,7 @@ static void loadPrefs() {
         //         }
         //         break;
         //     default:
-        //         NSLog(@"CustomControlCenter ISSUE: switch -> twCCWindowSizeChoice is default");
+        //         NSLog(@"CustomControlCentre ISSUE: switch -> twCCWindowSizeChoice is default");
         //         varCCWindowSizeCustomHeight = @(screenSize.height);
         //         varCCWindowSizeCustomWidth = @(screenSize.width);
         //         break;
@@ -349,7 +349,7 @@ static void loadPrefs() {
                 }
                 break;
             default:
-                NSLog(@"CustomControlCenter ISSUE: switch -> twCCWindowPosChoice is default");
+                NSLog(@"CustomControlCentre ISSUE: switch -> twCCWindowPosChoice is default");
                 varCCCollectionWindowPosCustomX = @(twCCCollectionWindowFrame.origin.x);
                 varCCCollectionWindowPosCustomY = @(twCCCollectionWindowFrame.origin.y);
                 break;
@@ -411,7 +411,7 @@ static void loadPrefs() {
 
 static void preferencesChanged(CFNotificationCenterRef center, void *observer, CFStringRef name, const void *object, CFDictionaryRef userInfo){
     loadPrefs();
-	NSLog(@"CustomControlCenter LOG: 'loadPrefs' called in 'preferencesChanged'");
+	NSLog(@"CustomControlCentre LOG: 'loadPrefs' called in 'preferencesChanged'");
 }
 
 %ctor {
@@ -422,7 +422,7 @@ static void preferencesChanged(CFNotificationCenterRef center, void *observer, C
 		CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(),
 			NULL,
 			(CFNotificationCallback)preferencesChanged,
-			CFSTR("ch.leroyb.CustomControlCenterPref.preferencesChanged"),
+			CFSTR("ch.leroyb.CustomControlCentrePref.preferencesChanged"),
 			NULL,
 			CFNotificationSuspensionBehaviorDeliverImmediately
 		);

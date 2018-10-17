@@ -81,7 +81,7 @@
 	UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
 	pasteboard.string = @"1EZATpr8i4N5XaR9bfCwPHAK6DB2s19uwN";
 	UIAlertController * alert = [UIAlertController
-			alertControllerWithTitle:@"CustomControlCenter: INFO"
+			alertControllerWithTitle:@"CustomControlCentre: INFO"
 							 message:@"My Bitcon address has been copied to your clipboard, all you have to do is paste it. Thank you for your donation! :)"
 					  preferredStyle:UIAlertControllerStyleAlert];
 	UIAlertAction* okButton = [UIAlertAction
@@ -99,7 +99,7 @@
 	UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
 	pasteboard.string = @"42jBMo7NpyYUoPU3qdu7x6cntT3ez2da5TxKTwZVX9eZfwBA6XzeQEFcTxBukNUYyaGtgvdKtLyz72udsnRo3hFhLYPo37L";
 	UIAlertController * alert = [UIAlertController
-			alertControllerWithTitle:@"CustomControlCenter: INFO"
+			alertControllerWithTitle:@"CustomControlCentre: INFO"
 							 message:@"My Monero address has been copied to your clipboard, all you have to do is paste it. Thank you for your donation! :)"
 					  preferredStyle:UIAlertControllerStyleAlert];
 	UIAlertAction* okButton = [UIAlertAction
