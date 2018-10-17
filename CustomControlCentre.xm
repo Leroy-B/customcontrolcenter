@@ -15,10 +15,6 @@
 -(void)drawControlCenterHeader;
 @end
 
-@interface CCUIScrollView : UIScrollView
--(void)drawControlCenterCollection;
-@end
-
 @interface MTMaterialView : UIView
 -(id)_viewControllerForAncestor;
 @end
@@ -29,15 +25,20 @@
 }
 @end
 
+@interface CCUIScrollView : UIScrollView
+@end
+
 @interface CCUILayoutView : CCUIScrollView
 @end
 
 @interface CCUIModuleCollectionView : CCUILayoutView
--(id)initWithFrame:(CGRect)arg1 layoutOptions:(id)arg2;
+-(void)drawControlCenterCollection;
 @end
 
 #define PLIST_PATH @"/var/mobile/Library/Preferences/ch.leroyb.CustomControlCentrePref.plist"
 static bool twIsEnabled = NO;
+
+static bool isDismissingCC = NO;
 
 static CGRect twCCWindowFrame;
 static NSNumber *twCCWindowSizeChoice = nil;
@@ -49,6 +50,7 @@ static NSNumber *twCCWindowPosCustomX = nil;
 static NSNumber *twCCWindowPosCustomY = nil;
 
 static CGRect twCCCollectionWindowFrame;
+static CGRect twCCCollectionWindowFrameOriginal;
 static NSNumber *twCCCollectionWindowPosChoice = nil;
 static NSNumber *twCCCollectionWindowPosCustomX = nil;
 static NSNumber *twCCCollectionWindowPosCustomY = nil;
@@ -89,20 +91,6 @@ static void loadPrefs() {
 }
 
 // ############################# HOOKS ### START ####################################
-
-%hook CCUIModuleCollectionView
-
-	-(id)initWithFrame:(CGRect)arg1 layoutOptions:(id)arg2 {
-		NSLog(@"CustomControlCentre DEBUG: initWithFrame %@ ;;; %@", NSStringFromCGRect(arg1), arg2);
-		return %orig(arg1, arg2);
-	}
-
-	-(void)setAlpha:(double)arg1 {
-		%orig(arg1);
-		NSLog(@"CustomControlCentre DEBUG: setAlpha %f", arg1);
-	}
-
-%end
 
 %hook CCUIHeaderPocketView
 
@@ -148,31 +136,29 @@ static void loadPrefs() {
 
 
 
-%hook CCUIModularControlCenterOverlayViewController
-
-	-(void)dismissAnimated:(BOOL)arg1 withCompletionHandler:(id)arg2 {
-		%orig(arg1, arg2);
-		//[[%c(CCUIModuleCollectionView) alloc] setAlpha:0];
-		NSLog(@"CustomControlCentre DEBUG: dismissAnimated arg1: %d ;; arg2: %@", arg1, arg2);
-	}
-
-%end
+// %hook CCUIModularControlCenterOverlayViewController
+//
+// 	-(void)dismissAnimated:(BOOL)arg1 withCompletionHandler:(id)arg2 {
+// 		%orig(arg1, arg2);
+// 		isDismissingCC = YES;
+// 		[[%c(SBControlCenterWindow) alloc] setFrame:twCCWindowFrameOriginal];
+// 		//[[%c(CCUIModuleCollectionView) alloc] setAlpha:0];
+// 		NSLog(@"CustomControlCentre DEBUG: dismissAnimated arg1: %d ;; arg2: %@", arg1, arg2);
+// 	}
+//
+// %end
 
 @interface CCUIDismissalGestureRecognizer : UIPanGestureRecognizer
 @end
 
 %hook CCUIDismissalGestureRecognizer
 
-	-(id)initWithTarget:(id)arg1 action:(SEL)arg2 {
-		[[%c(CCUIModuleCollectionView) alloc] setAlpha:0];
-		NSLog(@"CustomControlCentre DEBUG: initWithTarget arg1: %@ ;; arg2: %@", arg1, NSStringFromSelector(arg2));
-		return %orig(arg1, arg2);
-	}
-
 	-(void)touchesBegan:(id)arg1 withEvent:(id)arg2  {
 		%orig(arg1, arg2);
+		NSLog(@"CustomControlCentre DEBUG: touchesBegan arg1: %@ ;; arg2: %@", arg1, arg2);
+		isDismissingCC = YES;
 		[[%c(CCUIModuleCollectionView) alloc] setAlpha:0];
-		NSLog(@"CustomControlCentre DEBUG: touchesEnded arg1: %@ ;; arg2: %@", arg1, arg2);
+		NSLog(@"CustomControlCentre DEBUG: twCCCollectionWindowFrameOriginal %@", NSStringFromCGRect(twCCCollectionWindowFrameOriginal));
 	}
 
 %end
@@ -253,18 +239,6 @@ static void loadPrefs() {
                 varCCWindowPosCustomY = @(twCCWindowFrame.origin.y);
                 break;
         }//switch twCCWindowPosChoice end
-
-
-
-		// UIWindow *window = [[UIApplication sharedApplication] keyWindow];
-		// UIView *topView = window.rootViewController.view;
-		//NSLog(@"CustomControlCentre DEBUG: hook: %f", MSHookIvar<double>(self, "_cornerRadius"));
-		//
-		// topView.layer.cornerRadius = 5;
-		// topView.layer.masksToBounds = true;
-
-		//MSHookIvar<CGFloat>(%c(SBControlCenterWindow), "_cornerRadius") = 20;
-        // set new rect with x,y,width and height
         twCCWindowFrame = CGRectMake([varCCWindowPosCustomX doubleValue], [varCCWindowPosCustomY doubleValue], [varCCWindowSizeCustomWidth doubleValue], [varCCWindowSizeCustomHeight doubleValue]);
     }
 
@@ -272,15 +246,22 @@ static void loadPrefs() {
         if(!twIsEnabled) {
             %orig(arg1);
         } else {
-            twCCWindowFrame = arg1;
-            [[%c(SBControlCenterWindow) alloc] drawControlCenterSize];
-            %orig(twCCWindowFrame);
+			twCCWindowFrame = arg1;
+			[[%c(SBControlCenterWindow) alloc] drawControlCenterSize];
+	        %orig(twCCWindowFrame);
+			// if(isDismissingCC) {
+			// 	isDismissingCC = NO;
+			// 	%orig(twCCWindowFrameOriginal);
+			// } else {
+	        //     [[%c(SBControlCenterWindow) alloc] drawControlCenterSize];
+	        //     %orig(twCCWindowFrame);
+			// }
         }
     }
 
 %end //hook SBControlCenterWindow
 
-%hook CCUIScrollView
+%hook CCUIModuleCollectionView
 
     %new
     -(void)drawControlCenterCollection {
@@ -363,13 +344,23 @@ static void loadPrefs() {
         if(!twIsEnabled) {
             return %orig(arg1);
         } else {
-            twCCCollectionWindowFrame = arg1;
-            [[%c(CCUIModuleCollectionView) alloc] drawControlCenterCollection];
-            return %orig(twCCCollectionWindowFrame);
+			twCCCollectionWindowFrame = arg1;
+			[[%c(CCUIModuleCollectionView) alloc] drawControlCenterCollection];
+			%orig(twCCCollectionWindowFrame);
         }
     }
 
-%end //hook CCUIScrollView
+	-(void)setAlpha:(double)arg1 {
+		NSLog(@"CustomControlCentre DEBUG: setAlpha arg1 %f", arg1);
+		if(isDismissingCC) {
+			isDismissingCC = NO;
+		} else {
+
+		}
+		%orig(arg1);
+	}
+
+%end //hook CCUIModuleCollectionView
 
 %hook CCUILayoutOptions
 
@@ -380,12 +371,11 @@ static void loadPrefs() {
 		if(!twIsEnabled) {
 			return %orig();
 		} else {
-			if([twCCItemSpacing isKindOfClass:[NSNull class]]) {
-				varCCItemSpacing = @(15);
+			if([twCCItemSpacing isKindOfClass:[NSNull class]] || [twCCItemSpacing doubleValue] == 0) {
+				return 15;
 			} else {
-				varCCItemSpacing = twCCItemSpacing;
+				return [twCCItemSpacing doubleValue];
 			}
-	        return [varCCItemSpacing doubleValue];
 		}
     }
 
@@ -394,12 +384,11 @@ static void loadPrefs() {
 		if(!twIsEnabled) {
 			return %orig();
 		} else {
-			if([twCCItemEdgeSpacing isKindOfClass:[NSNull class]]) {
-				varCCItemEdgeSpacing = @(69);
+			if([twCCItemEdgeSpacing isKindOfClass:[NSNull class]] || [twCCItemEdgeSpacing doubleValue] == 0) {
+				return 69;
 			} else {
-				varCCItemEdgeSpacing = twCCItemEdgeSpacing;
+				return [twCCItemEdgeSpacing doubleValue];
 			}
-	        return [varCCItemEdgeSpacing doubleValue];
 		}
     }
 
