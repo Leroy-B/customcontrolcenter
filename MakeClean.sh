@@ -15,3 +15,4 @@ echo "Building..."
 # FINALPACKAGE=1
 make package install
 echo "Building done."
+date

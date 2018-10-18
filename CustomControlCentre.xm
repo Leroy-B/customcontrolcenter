@@ -7,16 +7,11 @@
 
 
 @interface SBControlCenterWindow : UIWindow
-@property (assign,setter=_setCornerRadius:,nonatomic) double _cornerRadius;
 -(void)drawControlCenterSize;
 @end
 
 @interface CCUIHeaderPocketView : UIView
 -(void)drawControlCenterHeader;
-@end
-
-@interface MTMaterialView : UIView
--(id)_viewControllerForAncestor;
 @end
 
 @interface CCUILayoutOptions : NSObject {
@@ -31,8 +26,17 @@
 @interface CCUILayoutView : CCUIScrollView
 @end
 
+@interface CCUIModularControlCenterOverlayViewController : UIViewController
++(id)sharedInstance;
+@end
+
 @interface CCUIModuleCollectionView : CCUILayoutView
+@property(nonatomic, assign, readwrite) CGRect frame;
 -(void)drawControlCenterCollection;
++(id)sharedInstance;
+@end
+
+@interface CCUIDismissalGestureRecognizer : UIPanGestureRecognizer
 @end
 
 #define PLIST_PATH @"/var/mobile/Library/Preferences/ch.leroyb.CustomControlCentrePref.plist"
@@ -50,7 +54,6 @@ static NSNumber *twCCWindowPosCustomX = nil;
 static NSNumber *twCCWindowPosCustomY = nil;
 
 static CGRect twCCCollectionWindowFrame;
-static CGRect twCCCollectionWindowFrameOriginal;
 static NSNumber *twCCCollectionWindowPosChoice = nil;
 static NSNumber *twCCCollectionWindowPosCustomX = nil;
 static NSNumber *twCCCollectionWindowPosCustomY = nil;
@@ -133,37 +136,6 @@ static void loadPrefs() {
     }
 
 %end
-
-
-
-// %hook CCUIModularControlCenterOverlayViewController
-//
-// 	-(void)dismissAnimated:(BOOL)arg1 withCompletionHandler:(id)arg2 {
-// 		%orig(arg1, arg2);
-// 		isDismissingCC = YES;
-// 		[[%c(SBControlCenterWindow) alloc] setFrame:twCCWindowFrameOriginal];
-// 		//[[%c(CCUIModuleCollectionView) alloc] setAlpha:0];
-// 		NSLog(@"CustomControlCentre DEBUG: dismissAnimated arg1: %d ;; arg2: %@", arg1, arg2);
-// 	}
-//
-// %end
-
-@interface CCUIDismissalGestureRecognizer : UIPanGestureRecognizer
-@end
-
-%hook CCUIDismissalGestureRecognizer
-
-	-(void)touchesBegan:(id)arg1 withEvent:(id)arg2  {
-		%orig(arg1, arg2);
-		NSLog(@"CustomControlCentre DEBUG: touchesBegan arg1: %@ ;; arg2: %@", arg1, arg2);
-		isDismissingCC = YES;
-		[[[%c(CCUIModuleCollectionView) sharedInstance] contentView] setAlpha:0.0f];
-		//[[%c(CCUIModuleCollectionView) alloc] setAlpha:0];
-		NSLog(@"CustomControlCentre DEBUG: twCCCollectionWindowFrameOriginal %@", NSStringFromCGRect(twCCCollectionWindowFrameOriginal));
-	}
-
-%end
-
 
 %hook SBControlCenterWindow
 
@@ -250,13 +222,6 @@ static void loadPrefs() {
 			twCCWindowFrame = arg1;
 			[[%c(SBControlCenterWindow) alloc] drawControlCenterSize];
 	        %orig(twCCWindowFrame);
-			// if(isDismissingCC) {
-			// 	isDismissingCC = NO;
-			// 	%orig(twCCWindowFrameOriginal);
-			// } else {
-	        //     [[%c(SBControlCenterWindow) alloc] drawControlCenterSize];
-	        //     %orig(twCCWindowFrame);
-			// }
         }
     }
 
@@ -313,7 +278,7 @@ static void loadPrefs() {
                 break;
             case 1://top
                 varCCCollectionWindowPosCustomX = @(0);
-                varCCCollectionWindowPosCustomY = @(-20);
+                varCCCollectionWindowPosCustomY = @(-50);
                 break;
             case 999://custom
                 if([twCCCollectionWindowPosCustomX isKindOfClass:[NSNull class]] && [twCCCollectionWindowPosCustomY isKindOfClass:[NSNull class]]) {
@@ -338,7 +303,19 @@ static void loadPrefs() {
         }//switch twCCWindowPosChoice end
 
         // set new rect with x,y,width and height
-        twCCCollectionWindowFrame = CGRectMake([varCCCollectionWindowPosCustomX doubleValue], [varCCCollectionWindowPosCustomY doubleValue], twCCCollectionWindowFrame.size.width, twCCCollectionWindowFrame.size.height);
+		twCCCollectionWindowFrame = CGRectMake([varCCCollectionWindowPosCustomX doubleValue], [varCCCollectionWindowPosCustomY doubleValue], twCCCollectionWindowFrame.size.width, twCCCollectionWindowFrame.size.height);
+
+		// if(isDismissingCC) {
+		// 	NSLog(@"CustomControlCentre DEBUG: isDismissingCC true");
+		// 	isDismissingCC = NO;
+		// 	//varCCCollectionWindowPosCustomY = @(0);
+		// 	twCCCollectionWindowFrame = CGRectMake([varCCCollectionWindowPosCustomX doubleValue], -100, twCCCollectionWindowFrame.size.width, twCCCollectionWindowFrame.size.height);
+		// } else {
+		// 	twCCCollectionWindowFrame = CGRectMake([varCCCollectionWindowPosCustomX doubleValue], [varCCCollectionWindowPosCustomY doubleValue], twCCCollectionWindowFrame.size.width, twCCCollectionWindowFrame.size.height);
+		// }
+		// NSLog(@"CustomControlCentre DEBUG: 1 CCUIModuleCollectionView rect %@",  NSStringFromCGRect(twCCCollectionWindowFrame));
+		// // twCCCollectionWindowFrame = CGRectMake([varCCCollectionWindowPosCustomX doubleValue], [varCCCollectionWindowPosCustomY doubleValue], twCCCollectionWindowFrame.size.width, twCCCollectionWindowFrame.size.height);
+		// NSLog(@"CustomControlCentre DEBUG: 2 CCUIModuleCollectionView rect %@",  NSStringFromCGRect(twCCCollectionWindowFrame));
     }
 
     -(void)setFrame:(CGRect)arg1 {
@@ -348,20 +325,66 @@ static void loadPrefs() {
 			twCCCollectionWindowFrame = arg1;
 			[[%c(CCUIModuleCollectionView) alloc] drawControlCenterCollection];
 			%orig(twCCCollectionWindowFrame);
+			// if(isDismissingCC) {
+			// 	NSLog(@"CustomControlCentre DEBUG: isDismissingCC true");
+			// 	NSLog(@"CustomControlCentre DEBUG: 1 isDismissingCC %@", NSStringFromCGRect(twCCCollectionWindowFrame));
+			// 	isDismissingCC = NO;
+			// 	twCCCollectionWindowFrame.origin.y = 0;
+			// 	NSLog(@"CustomControlCentre DEBUG: 2 isDismissingCC %@", NSStringFromCGRect(twCCCollectionWindowFrame));
+			// 	%orig(twCCCollectionWindowFrame);
+			// } else {
+			// 	[[%c(CCUIModuleCollectionView) alloc] drawControlCenterCollection];
+			// 	%orig(twCCCollectionWindowFrame);
+			// }
         }
     }
 
-	-(void)setAlpha:(double)arg1 {
-		NSLog(@"CustomControlCentre DEBUG: setAlpha arg1 %f", arg1);
-		if(isDismissingCC) {
-			isDismissingCC = NO;
-			%orig(arg1);
-		} else {
-			%orig(arg1);
-		}
-	}
+	// -(void)setAlpha:(double)arg1 {
+	// 	NSLog(@"CustomControlCentre DEBUG: setAlpha");
+	// 	if(!twIsEnabled) {
+    //         return %orig(arg1);
+    //     } else {
+	// 		if(isDismissingCC) {
+	// 			NSLog(@"CustomControlCentre DEBUG: isDismissingCC arg1 %f", arg1);
+	// 			isDismissingCC = NO;
+	// 			arg1 = 0.f;
+	// 		}
+	// 		return %orig(arg1);
+    //     }
+	// }
+
+
 
 %end //hook CCUIModuleCollectionView
+
+%hook CCUIModularControlCenterOverlayViewController
+-(void)viewDidLoad {
+	NSLog(@"CustomControlCentre DEBUG: self.view %f", self.view.alpha);
+	if(isDismissingCC) {
+		isDismissingCC = NO;
+		self.view.alpha = 0;
+	}
+	%orig();
+}
+%end
+
+%hook CCUIDismissalGestureRecognizer
+
+	-(void)touchesBegan:(id)arg1 withEvent:(id)arg2  {
+		%orig(arg1, arg2);
+		NSLog(@"CustomControlCentre DEBUG: touchesBegan");
+		isDismissingCC = YES;
+
+
+		//[[%c(CCUIModularControlCenterOverlayViewController) sharedInstance] viewDidLoad];
+
+
+		//MSHookIvar<double>([%c(CCUIModuleCollectionView) alloc], "alpha") = 0;
+		// CGRect myFrame = MSHookIvar<CGRect>([%c(CCUIModuleCollectionView) alloc], "frame");
+		// NSLog(@"CustomControlCentre DEBUG: myFrame %@", NSStringFromCGRect(myFrame));
+	}
+
+%end
 
 %hook CCUILayoutOptions
 
