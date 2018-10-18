@@ -157,7 +157,8 @@ static void loadPrefs() {
 		%orig(arg1, arg2);
 		NSLog(@"CustomControlCentre DEBUG: touchesBegan arg1: %@ ;; arg2: %@", arg1, arg2);
 		isDismissingCC = YES;
-		[[%c(CCUIModuleCollectionView) alloc] setAlpha:0];
+		[[[%c(CCUIModuleCollectionView) sharedInstance] contentView] setAlpha:0.0f];
+		//[[%c(CCUIModuleCollectionView) alloc] setAlpha:0];
 		NSLog(@"CustomControlCentre DEBUG: twCCCollectionWindowFrameOriginal %@", NSStringFromCGRect(twCCCollectionWindowFrameOriginal));
 	}
 
@@ -354,10 +355,10 @@ static void loadPrefs() {
 		NSLog(@"CustomControlCentre DEBUG: setAlpha arg1 %f", arg1);
 		if(isDismissingCC) {
 			isDismissingCC = NO;
+			%orig(arg1);
 		} else {
-
+			%orig(arg1);
 		}
-		%orig(arg1);
 	}
 
 %end //hook CCUIModuleCollectionView
