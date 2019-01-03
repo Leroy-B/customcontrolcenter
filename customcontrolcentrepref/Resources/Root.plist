@@ -21,8 +21,6 @@
 			<string>pfIsTweakEnabled</string>
 			<key>label</key>
 			<string>Enable CustomControlCentre</string>
-			<!-- <key>sublabel</key>
-			<string>Needs a respring.</string> -->
 			<key>PostNotification</key>
 			<string>ch.leroyb.CustomControlCentrePref.preferencesChanged</string>
 		</dict>
@@ -336,6 +334,40 @@
 			<string>ch.leroyb.CustomControlCentrePref.preferencesChanged</string>
 		</dict>
 		<!-- item spacing [end] -->
+		<!-- alpha [start] -->
+		<dict>
+			<key>cell</key>
+			<string>PSEditTextCell</string>
+			<key>placeholder</key>
+			<string>default: 1</string>
+			<key>default</key>
+			<string></string>
+			<key>defaults</key>
+			<string>ch.leroyb.CustomControlCentrePref</string>
+			<key>key</key>
+			<string>pfCCAlpha</string>
+			<key>label</key>
+			<string>Custom alpha value:</string>
+			<key>PostNotification</key>
+			<string>ch.leroyb.CustomControlCentrePref.preferencesChanged</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSEditTextCell</string>
+			<key>placeholder</key>
+			<string>default: 1</string>
+			<key>default</key>
+			<string></string>
+			<key>defaults</key>
+			<string>ch.leroyb.CustomControlCentrePref</string>
+			<key>key</key>
+			<string>pfCCModulsAlpha</string>
+			<key>label</key>
+			<string>Custom Moduls alpha value:</string>
+			<key>PostNotification</key>
+			<string>ch.leroyb.CustomControlCentrePref.preferencesChanged</string>
+		</dict>
+		<!-- alpha [end] -->
 		<!-- actions start -->
 		<dict>
 			<key>cell</key>
@@ -367,7 +399,7 @@
 			<key>label</key>
 			<string>infos</string>
 			<key>footerText</key>
-			<string>CustomControlCentre by LeroyB. Build 0.0.2 [Wednesday, 17 October 12018]</string>
+			<string>CustomControlCentre by LeroyB. Build 0.0.4 [Wednesday, 2 January 12019]</string>
 		</dict>
 		<dict>
 			<key>icon</key>
