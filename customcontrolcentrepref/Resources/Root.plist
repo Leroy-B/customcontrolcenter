@@ -223,6 +223,22 @@
 			<key>PostNotification</key>
 			<string>ch.leroyb.CustomControlCentrePref.preferencesChanged</string>
 		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSEditTextCell</string>
+			<key>placeholder</key>
+			<string>default: 1</string>
+			<key>default</key>
+			<string></string>
+			<key>defaults</key>
+			<string>ch.leroyb.CustomControlCentrePref</string>
+			<key>key</key>
+			<string>pfCCCollectionWindowScale</string>
+			<key>label</key>
+			<string>Custom 'scale' value:</string>
+			<key>PostNotification</key>
+			<string>ch.leroyb.CustomControlCentrePref.preferencesChanged</string>
+		</dict>
 		<!-- collection position [end] -->
 		<!-- header size [start] -->
 		<dict>
@@ -335,6 +351,14 @@
 		</dict>
 		<!-- item spacing [end] -->
 		<!-- alpha [start] -->
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>Choose a alpha value!</string>
+			<key>footerText</key>
+			<string>Choose the amount of alpha for the Control Centre and it's items.</string>
+		</dict>
 		<dict>
 			<key>cell</key>
 			<string>PSEditTextCell</string>

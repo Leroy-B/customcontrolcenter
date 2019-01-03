@@ -33,6 +33,7 @@
 @interface CCUIModuleCollectionView : CCUILayoutView
 @property(nonatomic, assign, readwrite) CGRect frame;
 -(void)drawControlCenterCollection;
+// -(void)drawControlCenterCollectionScale;
 +(id)sharedInstance;
 @end
 
@@ -57,6 +58,7 @@ static CGRect twCCCollectionWindowFrame;
 static NSNumber *twCCCollectionWindowPosChoice = nil;
 static NSNumber *twCCCollectionWindowPosCustomX = nil;
 static NSNumber *twCCCollectionWindowPosCustomY = nil;
+static NSNumber *twCCCollectionWindowScale = nil;
 
 static CGRect twCCHeaderFrame;
 static NSNumber *twCCHeaderSizeChoice = nil;
@@ -86,6 +88,7 @@ static void loadPrefs() {
         twCCCollectionWindowPosChoice   = ([prefs objectForKey:@"pfCCCollectionWindowPosChoice"] ? [prefs objectForKey:@"pfCCCollectionWindowPosChoice"] : twCCCollectionWindowPosChoice);
         twCCCollectionWindowPosCustomX  = ([prefs objectForKey:@"pfCCCollectionWindowPosCustomX"] ? [prefs objectForKey:@"pfCCCollectionWindowPosCustomX"] : twCCCollectionWindowPosCustomX);
         twCCCollectionWindowPosCustomY  = ([prefs objectForKey:@"pfCCCollectionWindowPosCustomY"] ? [prefs objectForKey:@"pfCCCollectionWindowPosCustomY"] : twCCCollectionWindowPosCustomY);
+		twCCCollectionWindowScale 		= ([prefs objectForKey:@"pfCCCollectionWindowScale"] ? [prefs objectForKey:@"pfCCCollectionWindowScale"] : twCCCollectionWindowScale);
 
         twCCHeaderSizeChoice            = ([prefs objectForKey:@"pfCCHeaderSizeChoice"] ? [prefs objectForKey:@"pfCCHeaderSizeChoice"] : twCCHeaderSizeChoice);
         twCCHeaderSizeCustomHeight      = ([prefs objectForKey:@"pfCCHeaderSizeCustomHeight"] ? [prefs objectForKey:@"pfCCHeaderSizeCustomHeight"] : twCCHeaderSizeCustomHeight);
@@ -94,6 +97,7 @@ static void loadPrefs() {
         twCCItemEdgeSpacing				= ([prefs objectForKey:@"pfCCItemEdgeSpacing"] ? [prefs objectForKey:@"pfCCItemEdgeSpacing"] : twCCItemEdgeSpacing);
 
 		twCCAlpha			            = ([prefs objectForKey:@"pfCCAlpha"] ? [prefs objectForKey:@"pfCCAlpha"] : twCCAlpha);
+		twCCModulsAlpha					= ([prefs objectForKey:@"pfCCModulsAlpha"] ? [prefs objectForKey:@"pfCCModulsAlpha"] : twCCModulsAlpha);
     }
     [prefs release];
 }
@@ -234,9 +238,6 @@ static void loadPrefs() {
 		if(!twIsEnabled) {
             %orig(arg1);
         } else {
-			// twCCAlpha = arg1;
-			// [[%c(SBControlCenterWindow) alloc] drawControlCenterSize];
-	        // %orig(twCCWindowFrame);
 			if([twCCAlpha isKindOfClass:[NSNull class]] || [twCCAlpha doubleValue] == 0) {
 				%orig(1);
 			} else {
@@ -249,46 +250,27 @@ static void loadPrefs() {
 
 %hook CCUIModuleCollectionView
 
+	// %new
+	// -(void)drawControlCenterCollectionScale {
+	// 	if([twCCCollectionWindowScale isKindOfClass:[NSNull class]] || [twCCCollectionWindowScale doubleValue] == 0) {
+	// 		CGAffineTransform transform = CGAffineTransformIdentity;
+	//
+	// 		[UIView animateWithDuration:(0.0001)
+	// 							  delay:0
+	// 							options:UIViewAnimationOptionCurveLinear
+	// 						 animations:^{
+	// 							 self.transform = CGAffineTransformScale(transform, [twCCCollectionWindowScale doubleValue], [twCCCollectionWindowScale doubleValue]);
+	// 						 }
+	// 						 completion:^(BOOL finished){
+	// 						 }];
+	// 	}
+	// }
+
     %new
     -(void)drawControlCenterCollection {
 
-        // NSNumber *varCCWindowSizeCustomHeight = @(screenSize.height);
-        // NSNumber *varCCWindowSizeCustomWidth = @(screenSize.width);
         NSNumber *varCCCollectionWindowPosCustomX = @(twCCWindowFrame.origin.x);
         NSNumber *varCCCollectionWindowPosCustomY = @(twCCWindowFrame.origin.y);
-
-        // //switch twCCWindowSizeChoice start
-        // switch ([twCCWindowSizeChoice intValue]) {
-        //     case 0://default
-        //         varCCWindowSizeCustomHeight = @(screenSize.height);
-        //         break;
-        //     case 1://half
-        //         varCCWindowSizeCustomHeight = @(screenSize.height/2);
-        //         break;
-        //     case 2://one-third
-        //         varCCWindowSizeCustomHeight = @(screenSize.height/3);
-        //         break;
-        //     case 999://Custom
-        //         if([twCCWindowSizeCustomHeight isKindOfClass:[NSNull class]] && [twCCWindowSizeCustomWidth isKindOfClass:[NSNull class]]) {
-        //             varCCWindowSizeCustomHeight = @(screenSize.height);
-        //             varCCWindowSizeCustomWidth = @(screenSize.width);
-        //         } else if([twCCWindowSizeCustomHeight isKindOfClass:[NSNull class]]) {
-        //             varCCWindowSizeCustomHeight = @(screenSize.height);
-        //             varCCWindowSizeCustomWidth = twCCWindowSizeCustomWidth;
-        //         } else if([twCCWindowSizeCustomWidth isKindOfClass:[NSNull class]]) {
-        //             varCCWindowSizeCustomHeight = twCCWindowSizeCustomHeight;
-        //             varCCWindowSizeCustomWidth = @(screenSize.width);
-        //         } else {
-        //             varCCWindowSizeCustomHeight = twCCWindowSizeCustomHeight;
-        //             varCCWindowSizeCustomWidth = twCCWindowSizeCustomWidth;
-        //         }
-        //         break;
-        //     default:
-        //         NSLog(@"CustomControlCentre ISSUE: switch -> twCCWindowSizeChoice is default");
-        //         varCCWindowSizeCustomHeight = @(screenSize.height);
-        //         varCCWindowSizeCustomWidth = @(screenSize.width);
-        //         break;
-        // }// switch twCCWindowSizeChoice end
 
         // switch twCCWindowPosChoice start
         switch ([twCCCollectionWindowPosChoice intValue]) {
@@ -320,44 +302,32 @@ static void loadPrefs() {
                 varCCCollectionWindowPosCustomX = @(twCCCollectionWindowFrame.origin.x);
                 varCCCollectionWindowPosCustomY = @(twCCCollectionWindowFrame.origin.y);
                 break;
-        }//switch twCCWindowPosChoice end
+        } // switch twCCWindowPosChoice end
 
         // set new rect with x,y,width and height
 		twCCCollectionWindowFrame = CGRectMake([varCCCollectionWindowPosCustomX doubleValue], [varCCCollectionWindowPosCustomY doubleValue], twCCCollectionWindowFrame.size.width, twCCCollectionWindowFrame.size.height);
-
-		// if(isDismissingCC) {
-		// 	NSLog(@"CustomControlCentre DEBUG: isDismissingCC true");
-		// 	isDismissingCC = NO;
-		// 	//varCCCollectionWindowPosCustomY = @(0);
-		// 	twCCCollectionWindowFrame = CGRectMake([varCCCollectionWindowPosCustomX doubleValue], -100, twCCCollectionWindowFrame.size.width, twCCCollectionWindowFrame.size.height);
-		// } else {
-		// 	twCCCollectionWindowFrame = CGRectMake([varCCCollectionWindowPosCustomX doubleValue], [varCCCollectionWindowPosCustomY doubleValue], twCCCollectionWindowFrame.size.width, twCCCollectionWindowFrame.size.height);
-		// }
-		// NSLog(@"CustomControlCentre DEBUG: 1 CCUIModuleCollectionView rect %@",  NSStringFromCGRect(twCCCollectionWindowFrame));
-		// // twCCCollectionWindowFrame = CGRectMake([varCCCollectionWindowPosCustomX doubleValue], [varCCCollectionWindowPosCustomY doubleValue], twCCCollectionWindowFrame.size.width, twCCCollectionWindowFrame.size.height);
-		// NSLog(@"CustomControlCentre DEBUG: 2 CCUIModuleCollectionView rect %@",  NSStringFromCGRect(twCCCollectionWindowFrame));
     }
 
-    // -(void)setFrame:(CGRect)arg1 {
-    //     if(!twIsEnabled) {
-    //         return %orig(arg1);
-    //     } else {
-	// 		twCCCollectionWindowFrame = arg1;
-	// 		[[%c(CCUIModuleCollectionView) alloc] drawControlCenterCollection];
-	// 		%orig(twCCCollectionWindowFrame);
-	// 		if(isDismissingCC) {
-	// 			NSLog(@"CustomControlCentre DEBUG: isDismissingCC true");
-	// 			NSLog(@"CustomControlCentre DEBUG: 1 isDismissingCC %@", NSStringFromCGRect(twCCCollectionWindowFrame));
-	// 			isDismissingCC = NO;
-	// 			twCCCollectionWindowFrame.origin.y = 0;
-	// 			NSLog(@"CustomControlCentre DEBUG: 2 isDismissingCC %@", NSStringFromCGRect(twCCCollectionWindowFrame));
-	// 			%orig(twCCCollectionWindowFrame);
-	// 		} else {
-	// 			[[%c(CCUIModuleCollectionView) alloc] drawControlCenterCollection];
-	// 			%orig(twCCCollectionWindowFrame);
-	// 		}
-    //     }
-    // }
+	-(void)setFrame:(CGRect)arg1 {
+        if(!twIsEnabled) {
+            %orig(arg1);
+        } else {
+			// twCCWindowFrame = arg1;
+			[[%c(CCUIModuleCollectionView) alloc] drawControlCenterCollection];
+			CGAffineTransform transform = CGAffineTransformIdentity;
+
+			[UIView animateWithDuration:(0.0001)
+								  delay:0
+								options:UIViewAnimationOptionCurveLinear
+							 animations:^{
+								 self.transform = CGAffineTransformScale(transform, [twCCCollectionWindowScale doubleValue], [twCCCollectionWindowScale doubleValue]);
+							 }
+							 completion:^(BOOL finished){
+							 }];
+			// [[%c(CCUIModuleCollectionView) alloc] drawControlCenterCollectionScale];
+	        %orig(twCCCollectionWindowFrame);
+        }
+    }
 
 	-(void)setAlpha:(double)arg1 {
 		if(!twIsEnabled) {
@@ -371,9 +341,9 @@ static void loadPrefs() {
         }
 	}
 
-
-
 %end //hook CCUIModuleCollectionView
+
+
 
 // %hook CCUIModularControlCenterOverlayViewController
 // -(void)viewDidLoad {
